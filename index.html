@@ -6,7 +6,7 @@
     <title>TCG RAM-Sync Launcher</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/peerjs@1.5.5/dist/peerjs.min.js"></script>
+    <!-- <script src="https://unpkg.com/peerjs@1.5.5/dist/peerjs.min.js"></script> -->
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&display=swap');
@@ -781,18 +781,37 @@
             $('conn-status').className = cls;
         }
 
+        // const peerOptions = {
+        //     debug: 1,
+        //     config: {
+        //         iceServers: [
+        //             { urls: 'stun:stun.l.google.com:19302' },
+        //             { urls: 'stun:stun1.l.google.com:19302' },
+        //             { urls: 'stun:stun2.l.google.com:19302' },
+        //             // Auth-free TURN servers
+        //             { urls: 'turn:relay1.experiments.webrtc.org:19305', username: 'webrtc', credential: 'turnserver' },
+        //             { urls: 'turn:relay2.experiments.webrtc.org:19305', username: 'webrtc', credential: 'turnserver' },
+        //             { urls: 'turn:openrelay.metered.ca:80', username: 'openrelayproject', credential: 'openrelayproject' },
+        //             { urls: 'turn:openrelay.metered.ca:443', username: 'openrelayproject', credential: 'openrelayproject' }
+        //         ]
+        //     }
+        // };
+
+        // ============================================================
+        // PEERJS CONFIG - USE YOUR RENDER SERVER
+        // ============================================================
+        const PEERJS_SERVER = 'poketcg-peerjs-server.onrender.com';
+        const PEERJS_PATH = '/peerjs';
+
         const peerOptions = {
+            host: PEERJS_SERVER,
+            port: 443,          // HTTPS
+            path: PEERJS_PATH,   // Must match your server.js path
             debug: 1,
             config: {
                 iceServers: [
                     { urls: 'stun:stun.l.google.com:19302' },
-                    { urls: 'stun:stun1.l.google.com:19302' },
-                    { urls: 'stun:stun2.l.google.com:19302' },
-                    // Auth-free TURN servers
-                    { urls: 'turn:relay1.experiments.webrtc.org:19305', username: 'webrtc', credential: 'turnserver' },
-                    { urls: 'turn:relay2.experiments.webrtc.org:19305', username: 'webrtc', credential: 'turnserver' },
-                    { urls: 'turn:openrelay.metered.ca:80', username: 'openrelayproject', credential: 'openrelayproject' },
-                    { urls: 'turn:openrelay.metered.ca:443', username: 'openrelayproject', credential: 'openrelayproject' }
+                    { urls: 'stun:stun1.l.google.com:19302' }
                 ]
             }
         };
@@ -824,29 +843,87 @@
             `;
         }
 
+        // function createHost() {
+        //     if (peer) { log('Already have a PeerJS session.'); return; }
+        //     myRoomCode = makeRoomCode();
+        //     $('room-code').innerText = myRoomCode;
+        //     setConnectionStatus('CREATING ROOM');
+        //     log(`Creating PeerJS Cloud room ${myRoomCode}...`);
+
+        //     peer = new Peer(myRoomCode, peerOptions);
+        //     peer.on('open', id => {
+        //         setConnectionStatus('WAITING FOR PLAYER');
+        //         log(`Room ready. Give the other player code: ${id}`);
+        //     });
+        //     peer.on('connection', c => {
+        //         log('Player joined room.');
+        //         setupConnection(c);
+        //     });
+        //     peer.on('error', err => {
+        //         log(`PeerJS ERROR: ${err.type || 'unknown'}`);
+        //         setConnectionStatus('LOBBY ERROR', 'text-red-500 font-bold uppercase');
+        //     });
+        //     isHost = true;
+        // }
+
+        // function joinRoom() {
+        //     const code = $('remote-id').value.trim().toUpperCase();
+        //     if (!/^[A-Z2-9]{6}$/.test(code)) {
+        //         log('Enter a valid 6-character room code.');
+        //         return;
+        //     }
+        //     if (peer) { log('Already have a PeerJS session.'); return; }
+
+        //     myRoomCode = code;
+        //     $('room-code').innerText = code;
+        //     setConnectionStatus('CONNECTING');
+        //     log(`Connecting to room ${code}...`);
+
+        //     peer = new Peer(peerOptions);
+        //     peer.on('open', () => {
+        //         const c = peer.connect(code, { serialization: 'json' });
+        //         setupConnection(c);
+        //     });
+        //     peer.on('error', err => {
+        //         log(`PeerJS ERROR: ${err.type || 'unknown'}`);
+        //         setConnectionStatus('LOBBY ERROR', 'text-red-500 font-bold uppercase');
+        //     });
+        //     isHost = false;
+        // }
+
+        // ============================================================
+        // CREATE HOST
+        // ============================================================
         function createHost() {
             if (peer) { log('Already have a PeerJS session.'); return; }
             myRoomCode = makeRoomCode();
             $('room-code').innerText = myRoomCode;
             setConnectionStatus('CREATING ROOM');
-            log(`Creating PeerJS Cloud room ${myRoomCode}...`);
+            log(`Creating room ${myRoomCode} on ${PEERJS_SERVER}...`);
 
             peer = new Peer(myRoomCode, peerOptions);
+
             peer.on('open', id => {
                 setConnectionStatus('WAITING FOR PLAYER');
-                log(`Room ready. Give the other player code: ${id}`);
+                log(`Room ready. Share this code: ${id}`);
             });
+
             peer.on('connection', c => {
                 log('Player joined room.');
                 setupConnection(c);
             });
+
             peer.on('error', err => {
-                log(`PeerJS ERROR: ${err.type || 'unknown'}`);
+                log(`PeerJS ERROR: ${err.type || err.message || 'unknown'}`);
                 setConnectionStatus('LOBBY ERROR', 'text-red-500 font-bold uppercase');
             });
+
             isHost = true;
         }
 
+        // ============================================================
+        // JOIN ROOM
+        // ============================================================
         function joinRoom() {
             const code = $('remote-id').value.trim().toUpperCase();
             if (!/^[A-Z2-9]{6}$/.test(code)) {
@@ -858,17 +935,20 @@
             myRoomCode = code;
             $('room-code').innerText = code;
             setConnectionStatus('CONNECTING');
-            log(`Connecting to room ${code}...`);
+            log(`Connecting to room ${code} on ${PEERJS_SERVER}...`);
 
             peer = new Peer(peerOptions);
+
             peer.on('open', () => {
                 const c = peer.connect(code, { serialization: 'json' });
                 setupConnection(c);
             });
+
             peer.on('error', err => {
-                log(`PeerJS ERROR: ${err.type || 'unknown'}`);
+                log(`PeerJS ERROR: ${err.type || err.message || 'unknown'}`);
                 setConnectionStatus('LOBBY ERROR', 'text-red-500 font-bold uppercase');
             });
+
             isHost = false;
         }
 
