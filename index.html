@@ -788,16 +788,30 @@
             host: PEERJS_SERVER,
             port: 443,
             path: PEERJS_PATH,
-            secure: true, // Force Secure WebSockets (WSS)
+            secure: true, // Required for GitHub Pages (HTTPS)
             debug: 3,
             config: {
                 iceTransportPolicy: 'all',
                 iceServers: [
-                    // Standard STUN servers (Keep these)
+                    // Standard STUN
                     { urls: 'stun:stun.l.google.com:19302' },
                     { urls: 'stun:stun1.l.google.com:19302' },
-                    { urls: 'stun:stun2.l.google.com:19302' }
-                    // Removed the dead bistri, anyfirewall, and viagenie TURN servers
+                    // Working Free TURN Server
+                    {
+                        urls: 'turn:openrelay.metered.ca:80',
+                        username: 'openrelayproject',
+                        credential: 'openrelayproject'
+                    },
+                    {
+                        urls: 'turn:openrelay.metered.ca:443',
+                        username: 'openrelayproject',
+                        credential: 'openrelayproject'
+                    },
+                    {
+                        urls: 'turn:openrelay.metered.ca:443?transport=tcp',
+                        username: 'openrelayproject',
+                        credential: 'openrelayproject'
+                    }
                 ]
             }
         };
