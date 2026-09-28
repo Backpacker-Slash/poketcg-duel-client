@@ -781,9 +781,6 @@
             $('conn-status').className = cls;
         }
 
-        // ============================================================
-        // PEERJS CONFIG - USE YOUR RENDER SERVER
-        // ============================================================
         const PEERJS_SERVER = 'poketcg-peerjs-server.onrender.com';
         const PEERJS_PATH = '/peerjs';
 
@@ -793,15 +790,29 @@
             path: PEERJS_PATH,
             debug: 3,
             config: {
-                iceTransportPolicy: 'all',
+                iceTransportPolicy: 'all',  // Try STUN first, fallback to TURN
                 iceServers: [
+                    // STUN (always include these)
                     { urls: 'stun:stun.l.google.com:19302' },
                     { urls: 'stun:stun1.l.google.com:19302' },
                     { urls: 'stun:stun2.l.google.com:19302' },
-                    { urls: 'stun:stun3.l.google.com:19302' },
-                    { urls: 'turn:openrelay.metered.ca:80', username: 'openrelayproject', credential: 'openrelayproject' },
-                    { urls: 'turn:openrelay.metered.ca:443', username: 'openrelayproject', credential: 'openrelayproject' },
-                    { urls: 'turn:openrelay.metered.ca:443?transport=tcp', username: 'openrelayproject', credential: 'openrelayproject' }
+
+                    // TURN with VALID certificates (FREE)
+                    {
+                        urls: 'turn:turn.bistri.com:80',
+                        username: 'homeo',
+                        credential: 'homeo'
+                    },
+                    {
+                        urls: 'turn:turn.anyfirewall.com:443',
+                        username: 'webrtc',
+                        credential: 'webrtc'
+                    },
+                    {
+                        urls: 'turn:numb.viagenie.ca',
+                        username: 'webrtc@live.com',
+                        credential: 'muazkh'
+                    }
                 ]
             }
         };
