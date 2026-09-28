@@ -787,6 +787,10 @@
                 iceServers: [
                     { urls: 'stun:stun.l.google.com:19302' },
                     { urls: 'stun:stun1.l.google.com:19302' },
+                    { urls: 'stun:stun2.l.google.com:19302' },
+                    // Auth-free TURN servers
+                    { urls: 'turn:relay1.experiments.webrtc.org:19305', username: 'webrtc', credential: 'turnserver' },
+                    { urls: 'turn:relay2.experiments.webrtc.org:19305', username: 'webrtc', credential: 'turnserver' },
                     { urls: 'turn:openrelay.metered.ca:80', username: 'openrelayproject', credential: 'openrelayproject' },
                     { urls: 'turn:openrelay.metered.ca:443', username: 'openrelayproject', credential: 'openrelayproject' }
                 ]
@@ -893,26 +897,6 @@
                     name: myName,
                     rawName: rawName
                 });
-            });
-
-            // conn.on("open", () => {
-            //     log("WebRTC DATA CONNECTION OPEN!");
-            // });
-
-            // conn.on("error", (err) => {
-            //     log("DATA CONNECTION ERROR: " + err.type + " / " + err.message);
-            // });
-
-            // conn.on("close", () => {
-            //     log("WebRTC DATA CONNECTION CLOSED.");
-            // });
-
-            conn.on("iceStateChanged", (state) => {
-                log("ICE state: " + state);
-            });
-
-            conn.on("iceStateChangeFailed", () => {
-                log("ICE CONNECTION FAILED");
             });
 
             conn.on('data', d => {
