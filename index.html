@@ -818,24 +818,24 @@
         //     }
         // };
 
-        // ============================================================
-        // PEERJS CONFIG - USE YOUR RENDER SERVER
-        // ============================================================
-        const PEERJS_SERVER = 'poketcg-peerjs-server.onrender.com';
-        const PEERJS_PATH = '/peerjs';
+        // // ============================================================
+        // // PEERJS CONFIG - USE YOUR RENDER SERVER
+        // // ============================================================
+        // const PEERJS_SERVER = 'poketcg-peerjs-server.onrender.com';
+        // const PEERJS_PATH = '/peerjs';
 
-        const peerOptions = {
-            host: PEERJS_SERVER,
-            port: 443,          // HTTPS
-            path: PEERJS_PATH,   // Must match your server.js path
-            debug: 1,
-            config: {
-                iceServers: [
-                    { urls: 'stun:stun.l.google.com:19302' },
-                    { urls: 'stun:stun1.l.google.com:19302' }
-                ]
-            }
-        };
+        // const peerOptions = {
+        //     host: PEERJS_SERVER,
+        //     port: 443,          // HTTPS
+        //     path: PEERJS_PATH,   // Must match your server.js path
+        //     debug: 1,
+        //     config: {
+        //         iceServers: [
+        //             { urls: 'stun:stun.l.google.com:19302' },
+        //             { urls: 'stun:stun1.l.google.com:19302' }
+        //         ]
+        //     }
+        // };
 
         function updateDebugOverlay() {
             const wram = getWram();
