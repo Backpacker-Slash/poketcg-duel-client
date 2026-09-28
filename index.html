@@ -781,61 +781,30 @@
             $('conn-status').className = cls;
         }
 
+        // ============================================================
+        // PEERJS CONFIG - USE YOUR RENDER SERVER
+        // ============================================================
+        const PEERJS_SERVER = 'poketcg-peerjs-server.onrender.com';
+        const PEERJS_PATH = '/peerjs';
+
         const peerOptions = {
-            host: 'poketcg-peerjs-server.onrender.com',
+            host: PEERJS_SERVER,
             port: 443,
-            path: '/peerjs',
-            debug: 3,  // More verbose logging
+            path: PEERJS_PATH,
+            debug: 3,
             config: {
-                iceTransportPolicy: 'all',  // Try STUN first, then TURN
+                iceTransportPolicy: 'all',
                 iceServers: [
-                    // STUN (free, always works)
                     { urls: 'stun:stun.l.google.com:19302' },
                     { urls: 'stun:stun1.l.google.com:19302' },
                     { urls: 'stun:stun2.l.google.com:19302' },
                     { urls: 'stun:stun3.l.google.com:19302' },
-                    // TURN (relay for when STUN fails - CRITICAL)
                     { urls: 'turn:openrelay.metered.ca:80', username: 'openrelayproject', credential: 'openrelayproject' },
                     { urls: 'turn:openrelay.metered.ca:443', username: 'openrelayproject', credential: 'openrelayproject' },
                     { urls: 'turn:openrelay.metered.ca:443?transport=tcp', username: 'openrelayproject', credential: 'openrelayproject' }
                 ]
             }
         };
-
-        // const peerOptions = {
-        //     debug: 1,
-        //     config: {
-        //         iceServers: [
-        //             { urls: 'stun:stun.l.google.com:19302' },
-        //             { urls: 'stun:stun1.l.google.com:19302' },
-        //             { urls: 'stun:stun2.l.google.com:19302' },
-        //             // Auth-free TURN servers
-        //             { urls: 'turn:relay1.experiments.webrtc.org:19305', username: 'webrtc', credential: 'turnserver' },
-        //             { urls: 'turn:relay2.experiments.webrtc.org:19305', username: 'webrtc', credential: 'turnserver' },
-        //             { urls: 'turn:openrelay.metered.ca:80', username: 'openrelayproject', credential: 'openrelayproject' },
-        //             { urls: 'turn:openrelay.metered.ca:443', username: 'openrelayproject', credential: 'openrelayproject' }
-        //         ]
-        //     }
-        // };
-
-        // // ============================================================
-        // // PEERJS CONFIG - USE YOUR RENDER SERVER
-        // // ============================================================
-        // const PEERJS_SERVER = 'poketcg-peerjs-server.onrender.com';
-        // const PEERJS_PATH = '/peerjs';
-
-        // const peerOptions = {
-        //     host: PEERJS_SERVER,
-        //     port: 443,          // HTTPS
-        //     path: PEERJS_PATH,   // Must match your server.js path
-        //     debug: 1,
-        //     config: {
-        //         iceServers: [
-        //             { urls: 'stun:stun.l.google.com:19302' },
-        //             { urls: 'stun:stun1.l.google.com:19302' }
-        //         ]
-        //     }
-        // };
 
         function updateDebugOverlay() {
             const wram = getWram();
