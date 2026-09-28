@@ -6,7 +6,7 @@
     <title>TCG RAM-Sync Launcher</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+    <script src="https://unpkg.com/peerjs@1.5.5/dist/peerjs.min.js"></script>
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&display=swap');
@@ -893,6 +893,26 @@
                     name: myName,
                     rawName: rawName
                 });
+            });
+
+            // conn.on("open", () => {
+            //     log("WebRTC DATA CONNECTION OPEN!");
+            // });
+
+            // conn.on("error", (err) => {
+            //     log("DATA CONNECTION ERROR: " + err.type + " / " + err.message);
+            // });
+
+            // conn.on("close", () => {
+            //     log("WebRTC DATA CONNECTION CLOSED.");
+            // });
+
+            conn.on("iceStateChanged", (state) => {
+                log("ICE state: " + state);
+            });
+
+            conn.on("iceStateChangeFailed", () => {
+                log("ICE CONNECTION FAILED");
             });
 
             conn.on('data', d => {
