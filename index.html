@@ -781,6 +781,27 @@
             $('conn-status').className = cls;
         }
 
+        const peerOptions = {
+            host: 'poketcg-peerjs-server.onrender.com',
+            port: 443,
+            path: '/peerjs',
+            debug: 3,  // More verbose logging
+            config: {
+                iceTransportPolicy: 'all',  // Try STUN first, then TURN
+                iceServers: [
+                    // STUN (free, always works)
+                    { urls: 'stun:stun.l.google.com:19302' },
+                    { urls: 'stun:stun1.l.google.com:19302' },
+                    { urls: 'stun:stun2.l.google.com:19302' },
+                    { urls: 'stun:stun3.l.google.com:19302' },
+                    // TURN (relay for when STUN fails - CRITICAL)
+                    { urls: 'turn:openrelay.metered.ca:80', username: 'openrelayproject', credential: 'openrelayproject' },
+                    { urls: 'turn:openrelay.metered.ca:443', username: 'openrelayproject', credential: 'openrelayproject' },
+                    { urls: 'turn:openrelay.metered.ca:443?transport=tcp', username: 'openrelayproject', credential: 'openrelayproject' }
+                ]
+            }
+        };
+
         // const peerOptions = {
         //     debug: 1,
         //     config: {
