@@ -793,26 +793,30 @@
             config: {
                 iceTransportPolicy: 'all',
                 iceServers: [
-                    // Standard STUN
-                    { urls: 'stun:stun.l.google.com:19302' },
-                    { urls: 'stun:stun1.l.google.com:19302' },
-                    // Working Free TURN Server
                     {
-                        urls: 'turn:openrelay.metered.ca:80',
-                        username: 'openrelayproject',
-                        credential: 'openrelayproject'
+                        urls: "stun:stun.relay.metered.ca:80",
                     },
                     {
-                        urls: 'turn:openrelay.metered.ca:443',
-                        username: 'openrelayproject',
-                        credential: 'openrelayproject'
+                        urls: "turn:global.relay.metered.ca:80",
+                        username: "3bbc2d5b0a81c730368afa0f",
+                        credential: "wr4vKueM5c7mGY94",
                     },
                     {
-                        urls: 'turn:openrelay.metered.ca:443?transport=tcp',
-                        username: 'openrelayproject',
-                        credential: 'openrelayproject'
-                    }
-                ]
+                        urls: "turn:global.relay.metered.ca:80?transport=tcp",
+                        username: "3bbc2d5b0a81c730368afa0f",
+                        credential: "wr4vKueM5c7mGY94",
+                    },
+                    {
+                        urls: "turn:global.relay.metered.ca:443",
+                        username: "3bbc2d5b0a81c730368afa0f",
+                        credential: "wr4vKueM5c7mGY94",
+                    },
+                    {
+                        urls: "turns:global.relay.metered.ca:443?transport=tcp",
+                        username: "3bbc2d5b0a81c730368afa0f",
+                        credential: "wr4vKueM5c7mGY94",
+                    },
+                ],
             }
         };
 
