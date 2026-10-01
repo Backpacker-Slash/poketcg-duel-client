@@ -1006,11 +1006,14 @@
                             wram[OFFSET_SERIAL_OP] = joinerGoesFirst ? 0x29 : 0x00;
                             const starterText = joinerGoesFirst ? "YOU GO FIRST!" : "OPPONENT GOES FIRST!";
                             log(`Coin flip result: ${starterText} (wSerialOp = 0x${wram[OFFSET_SERIAL_OP].toString(16)})`);
-                            addChatMessage('SYSTEM', `Match starting! ${starterText}`);
+                            // addChatMessage('SYSTEM', `Match starting! ${starterText}`);
+                            addChatMessage('SYSTEM', `Match starting!`);
+                            
                         } else if (isHost) {
                             const hostGoesFirst = (wram[OFFSET_SERIAL_OP] === 0x29);
                             const starterText = hostGoesFirst ? "YOU GO FIRST!" : "OPPONENT GOES FIRST!";
-                            addChatMessage('SYSTEM', `Match starting! ${starterText}`);
+                            // addChatMessage('SYSTEM', `Match starting! ${starterText}`);
+                            addChatMessage('SYSTEM', `Match starting!`);
                         }
                     }
                     return;
